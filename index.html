@@ -152,10 +152,12 @@ a:hover { text-decoration: none; }
   white-space: nowrap;
   z-index: 50;
 }
-.fast-wrap:hover .fast-word {
+.fast-wrap:hover .fast-word,
+.fast-wrap.fast-active .fast-word {
   opacity: 0;
 }
-.fast-wrap:hover .fast-popup {
+.fast-wrap:hover .fast-popup,
+.fast-wrap.fast-active .fast-popup {
   opacity: 1;
 }
 .fast-car-img {
@@ -722,7 +724,7 @@ a:hover { text-decoration: none; }
 
 /* ── Small tablet / large mobile (≤600px) ── */
 @media (max-width: 600px) {
-  .fast-popup { display: none !important; }
+  .fast-car-img { height: 40px; }
   .section-title { margin-top: 44px; }
   .chat-suggestions { grid-template-columns: 1fr; }
   .chat-suggestion { padding: 12px 14px; }
@@ -1599,15 +1601,29 @@ a:hover { text-decoration: none; }
   window.addEventListener('resize', buildBinaryGrid);
 })();
 
-// fast hover — restart WebP on each hover entry
+// fast animation — restart WebP on hover (desktop) and tap (mobile/touch)
 (function() {
   var fastImg = document.querySelector('.fast-car-img');
   if (!fastImg) return;
+  var wrap = document.querySelector('.fast-wrap');
   var src = fastImg.src;
-  document.querySelector('.fast-wrap').addEventListener('mouseenter', function() {
+  var tapTimer = null;
+
+  wrap.addEventListener('mouseenter', function() {
     fastImg.src = '';
     fastImg.src = src;
   });
+
+  wrap.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    fastImg.src = '';
+    fastImg.src = src;
+    wrap.classList.add('fast-active');
+    clearTimeout(tapTimer);
+    tapTimer = setTimeout(function() {
+      wrap.classList.remove('fast-active');
+    }, 1400);
+  }, { passive: false });
 })();
 
 // role popups — show on hover, stay open while over text or popup, close when cursor leaves both
