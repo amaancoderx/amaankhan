@@ -1870,9 +1870,20 @@ function getResponse(q) {
     return "sure. what's your name?";
   }
 
-  // proof / skeptical / verify intent — any angle
-  if (/proof|prove|evidence|verif(y|ication)?|legit(imate)?|credib|for real\b|is (it|this|that) (real|true|legit|genuine|right|accurate)|show (me |us )?(proof|evidence|it)|i (want|wanna) (to )?see (it|proof|evidence)|where can i see|can i see|got (a |any )?(link|proof|source)|links?\??|source\??|screenshot|pic\b|real\?$|genuine|authentic|is (he|amaan) (really|actually)|did (you|he|amaan) (really|actually)|were (you|he|amaan) (really|actually)|are you (really|sure|certain) (about|that)?|i (don.t|dont) (believe|buy|trust)|not (convinced|buying|sure)|back (it|that) up|prove it|fr\b|how (do i|would i|can i) (know|verify|check)|can you (confirm|verify)|sounds (too good|fake|made up)|not buying/.test(r)) {
+  // proof / skeptical / verify intent — any angle, any phrasing
+  if (/proof|prove|evidence|verif(y|ication)?|legit(imate)?|credib|for real\b|is (it|this|that) (real|true|legit|genuine|right|accurate)|show (me |us |the )?(proof|evidence|it|post|link|pic|photo|tweet|image)|i (want|wanna) (to )?see (it|proof|evidence|the post|the link|a pic|a photo)|where can i see|can i see|got (a |any )?(link|proof|source|post|pic|photo)|links?\??|source\??|screenshot|pic\b|photo\b|real\?$|genuine|authentic|is (he|amaan) (really|actually)|did (you|he|amaan) (really|actually)|were (you|he|amaan) (really|actually)|are you (really|sure|certain)|i (don.t|dont) (believe|buy|trust)|believ|not (convinced|buying|sure)|back (it|that) up|prove it|fr\b|how (do i|would i|can i) (know|verify|check)|can you (confirm|verify)|sounds (too good|fake|made up)|not buying|why (should|would|must|im|do) (i |you |we )?(believe|trust|believ)|(any )?(post|link|tweet|pic|photo|image) (about|for|of|on)\b|drop (the |a )?link|share (the |a )?(link|post)|send (me )?(the |a )?(link|post|pic|photo)|any (post|link|pic|image|photo|tweet)\b/.test(r)) {
     return getProof(r, lastTopic);
+  }
+
+  // context-aware follow-up — "more details", "tell me more", "what else", "more about this/that"
+  if (/more (details?|info(rmation)?|context)|tell me more|elaborate|what else (about|on)?|go (deeper|further)|expand (on )?(this|that)?|more (on|about) (this|that|it|the event|the program|the hackathon|him)|what (happened|was it like|is it about)|how (was it|did it go|does it work)|what.s (more|the story)|any(thing)? else (about|on)|more about these?/.test(r)) {
+    if (lastTopic === 'yc') return "yc startup school india is the indian chapter of ycombinator's startup school. selected founders go through a structured cohort alongside yc's international batch — weekly goals, group sessions, founder check-ins.\n\namaan was in the bangalore cohort. ask 'yc proof' to see the linkedin post.";
+    if (lastTopic === 'hack1') return "agentx was the ai track at udhgam 2.0, woxsen university. 8-hour build, judged on impact and execution. amaan built genome ai — a multi-agent system for marketing intelligence (ad analysis, competitor intel, automated reports).\n\nresult: 1st runner-up, ₹5,000. live: genome-ai-vert.vercel.app\n\nask 'agentx proof' to see the post.";
+    if (lastTopic === 'hack2') return "masumi x india codex was a cardano-focused hackathon. amaan built an ai-powered lead gen agent on the masumi network — scrapes and qualifies leads from x/twitter.\n\nresult: 2nd place, $450. code: github.com/amaancoderx/x-leads-scrapper";
+    if (lastTopic === 'hack3') return "cardano hackathon asia 2025 was at india blockchain week (ibw), a 30-hour offline hackathon. 5,000+ applicants went through selection before it.\n\namaan built metaflow — a multi-agent coordination protocol on masumi network. reached grand finals.\n\ncode: github.com/amaancoderx/metaflow\n\nask 'cardano proof' to see the post.";
+    if (lastTopic === 'skillui') return "skillui launched with one x post that hit 1m+ views. 500+ github stars followed. it solves extracting design systems without reading source code — useful for feeding context into ai coding tools like claude and cursor.\n\nlive: skillui.vercel.app\ngithub: github.com/amaancoderx/npxskillui";
+    if (lastTopic === 'hack') return "3 wins total:\n\ngrand finalist — cardano hackathon asia 2025 (5,000+ applicants, 30hr offline)\n2nd place — masumi x india codex ($450)\n1st runner-up — agentx udhgam 2.0 (₹5,000, 8hr build)\n\nask about any specific one for full details and proof.";
+    if (lastTopic === 'skillui') return "skillui is amaan's most popular open source project. launched with one post, went viral with 1m+ views, hit 500+ stars fast. solves a real dev problem — extracting design tokens from any site without reading source.";
   }
 
   // greetings
@@ -1956,13 +1967,13 @@ function getResponse(q) {
   // YC / Startup School
   if (/\byc\b|y combinator|startup school/.test(r)) {
     lastTopic = 'yc';
-    return "amaan was selected for yc startup school india (bangalore cohort). highly competitive, runs parallel to ycombinator's international batch.";
+    return "amaan was selected for yc startup school india, bangalore cohort. highly competitive — runs parallel to ycombinator's international batch with weekly goals, founder sessions, and structured cohort check-ins.\n\nask 'yc proof' to see the post, or 'more details' for more on the program.";
   }
 
   // Hackathons / achievements
   if (/hackathon|achievement|award|prize|win|won|finalist/.test(r)) {
     lastTopic = 'hack';
-    return "hackathon record:\n\ngrand finalist — cardano hackathon asia 2025 (ibw), built metaflow\n2nd place — masumi x india codex cardano hackathon ($450)\n1st runner-up — agentx udhgam 2.0 (₹5,000), built genome ai in 8 hours\nselected for yc startup school india";
+    return "hackathon record:\n\ngrand finalist — cardano hackathon asia 2025 (ibw), built metaflow\n2nd place — masumi x india codex cardano hackathon ($450)\n1st runner-up — agentx udhgam 2.0 (₹5,000), built genome ai in 8 hours\nselected for yc startup school india\n\nask about any specific one for details and proof.";
   }
 
   // Certifications
@@ -2027,8 +2038,8 @@ function getResponse(q) {
   if (/age|how old|born|young|student|undergrad|college/.test(r))
     return "cs undergraduate at woxsen university (ai/ml specialization), hyderabad. building seriously while still in college.";
 
-  // Social / X / content
-  if (/tweet|post|content|viral|x\.com|twitter|social media|following|views|x post/.test(r))
+  // Social / X / content (general — "any post about X" is already caught by proof branch above)
+  if (/\btweet\b|social media|following|\bviews\b|x\.com|twitter|x post|content creator|does (he|amaan) post/.test(r))
     return "1m+ views on x.com/amaanbuilds — mostly from the skillui launch. posts about ai tools, developer workflows, and build updates.";
 
   // Collab / hire / open to work
