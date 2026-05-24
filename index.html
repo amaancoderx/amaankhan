@@ -776,13 +776,17 @@ a:hover { text-decoration: none; }
   .chat-msg.ai .chat-bubble { font-size: 12px; }
 }
 
-/* ── Touch devices: show achievement reveals without hover ── */
+/* ── Click/tap-open state — mirrors hover, triggered by JS on all devices ── */
+.achievement-item.ach-open .ach-chip { opacity: 1; transform: translateX(0); }
+.achievement-item.ach-open .ach-reveal { max-height: 200px; opacity: 1; transform: translateY(0); }
+.achievement-item.ach-open .ach-links { opacity: 1; }
+.achievement-item.ach-open .ach-underline { width: 100%; }
+.achievement-item.ach-open .ach-prize { text-shadow: 0 0 10px rgba(255,107,107,0.45); }
+
+/* Touch devices: make achievements and role triggers feel tappable */
 @media (hover: none) {
-  .ach-chip { opacity: 1; transform: translateX(0); }
-  .ach-reveal { max-height: 200px; opacity: 1; transform: translateY(0); }
-  .ach-links { opacity: 1; }
-  .ach-underline { width: 100%; }
-  .achievement-item { cursor: default; }
+  .achievement-item { cursor: pointer; }
+  .role-btn { cursor: pointer; }
 }
 
 /* ── AI CHAT ── */
@@ -1626,7 +1630,7 @@ a:hover { text-decoration: none; }
   }, { passive: false });
 })();
 
-// role popups — show on hover, stay open while over text or popup, close when cursor leaves both
+// role popups — hover on desktop, tap/click on touch devices
 document.querySelectorAll('.role-popup-wrap').forEach(function(wrap) {
   var timer = null;
   var popup = wrap.querySelector('.role-popup');
@@ -1645,10 +1649,46 @@ document.querySelectorAll('.role-popup-wrap').forEach(function(wrap) {
     }, 120);
   }
 
+  // desktop hover
   wrap.addEventListener('mouseenter', show);
   wrap.addEventListener('mouseleave', scheduleHide);
   popup.addEventListener('mouseenter', function() { clearTimeout(timer); });
   popup.addEventListener('mouseleave', scheduleHide);
+
+  // tap/click toggle (mobile + desktop)
+  wrap.addEventListener('click', function(e) {
+    if (e.target.closest('a')) return;
+    clearTimeout(timer);
+    if (popup.classList.contains('visible')) {
+      popup.classList.remove('visible');
+    } else {
+      document.querySelectorAll('.role-popup.visible').forEach(function(p) {
+        p.classList.remove('visible');
+      });
+      popup.classList.add('visible');
+    }
+  });
+});
+
+// tap outside any popup to close all
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.role-popup-wrap')) {
+    document.querySelectorAll('.role-popup.visible').forEach(function(p) {
+      p.classList.remove('visible');
+    });
+  }
+});
+
+// achievement items — tap/click to reveal details with animation
+document.querySelectorAll('.achievement-item').forEach(function(item) {
+  item.addEventListener('click', function(e) {
+    if (e.target.closest('a')) return;
+    var isOpen = item.classList.contains('ach-open');
+    document.querySelectorAll('.achievement-item.ach-open').forEach(function(other) {
+      if (other !== item) other.classList.remove('ach-open');
+    });
+    item.classList.toggle('ach-open', !isOpen);
+  });
 });
 
 function toggleProject(btn) {
