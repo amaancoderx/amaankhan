@@ -2028,7 +2028,7 @@ function getResponse(q) {
   }
 
   // Certifications
-  if (/certif|oracle|oci/.test(r))
+  if (/certif|oracle|\boci\b/.test(r))
     return "certifications:\n\noracle cloud infrastructure 2025 generative ai professional\ndeloitte data analytics simulation\nproduct analytics and ai — university of virginia\ndigital transformation with google cloud";
 
   // Tech stack / skills
@@ -2095,8 +2095,8 @@ function getResponse(q) {
     return "open to the right opportunities — ai engineering, automation, or product work.\n\nwhat's your name?";
   }
 
-  // Contact / links
-  if (/contact|email|reach|connect|linkedin|social|link/.test(r))
+  // Contact / links / socials
+  if (/contact|email|reach|connect|linkedin|github|social|handle|profile|link/.test(r))
     return "email: amaan.coderx@gmail.com\ngithub: github.com/amaancoderx\nlinkedin: linkedin.com/in/amaan-khan-x";
 
   // Education
