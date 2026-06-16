@@ -6,7 +6,6 @@
 
 [![Portfolio](https://img.shields.io/badge/portfolio-live-000000?style=flat-square)](https://amaancoderx.github.io/amaankhan)
 [![GitHub](https://img.shields.io/github/followers/amaancoderx?label=GitHub&style=flat-square&logo=github)](https://github.com/amaancoderx)
-[![X](https://img.shields.io/badge/X-@amaanbuilds-000000?style=flat-square&logo=x)](https://x.com/amaanbuilds)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-amaan--khan--x-0077B5?style=flat-square&logo=linkedin)](https://linkedin.com/in/amaan-khan-x)
 
 </div>
@@ -52,4 +51,4 @@ Source for my personal portfolio site. Single HTML file, no frameworks, no build
 
 ## Contact
 
-[amaan.coderx@gmail.com](mailto:amaan.coderx@gmail.com) &nbsp;·&nbsp; [x.com/amaanbuilds](https://x.com/amaanbuilds) &nbsp;·&nbsp; [linkedin.com/in/amaan-khan-x](https://linkedin.com/in/amaan-khan-x)
+[amaan.coderx@gmail.com](mailto:amaan.coderx@gmail.com) &nbsp;·&nbsp; [linkedin.com/in/amaan-khan-x](https://linkedin.com/in/amaan-khan-x)
